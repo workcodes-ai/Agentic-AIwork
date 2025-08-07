@@ -11,41 +11,34 @@ Question:
 {question}
 """)
 
-def adaptive_rag(query: str, vectorstore, embeddings, llm, threshold=0.75):
-    # print("🔍 Performing similarity search (with scores)...")
+def adaptive_rag(query, vectorstore, embeddings, llm, k=3, similarity_threshold=0.7):
+    results_with_scores = vectorstore.similarity_search_with_score(query, k=k)
+    query_embedding = embeddings.embed_query(query)
+
+
+    if not results_with_scores:
+        response = llm.invoke(query)
+        return getattr(response, "content", "No response received"), True  # fallback
+
+    # Filter docs by threshold
+    filtered_docs = [(doc, score) for doc, score in results_with_scores if score >= similarity_threshold]
+
     
-    results = vectorstore.similarity_search_with_score(query, k=3)
-    # print("📊 Raw Results:", results)
 
-    if not results:
-        # print("⚠️ No vector DB matches. Sending query directly to LLM...")
-        response = llm.invoke(query)
-        # print("🧠 Raw response object:", response)
-        # print("🧠 Response content:", getattr(response, "content", "❌ No .content attribute"))
-        return getattr(response, "content", "No response received"), True
-
-    docs, scores = zip(*results)
-    # print("📊 Similarity scores:", scores)
-
-    max_score = max(scores)
-    if max_score < threshold:
-        # print(f"⚠️ Score too low ({max_score:.2f} < {threshold}). Using LLM fallback...")
-        response = llm.invoke(query)
-        # print("🧠 Raw response object:", response)
-        # print("🧠 Response content:", getattr(response, "content", "❌ No .content attribute"))
-        return getattr(response, "content", "No response received"), True
-
-    context = "\n".join([doc.page_content for doc in docs])
+    # Build context from filtered docs
+    context = "\n".join([doc.page_content for doc, _ in filtered_docs])
     prompt = rag_prompt.format(context=context, question=query)
-    # print("📨 Prompt to LLM:\n", prompt)
 
     response = llm.invoke(prompt)
-    # print("🧠 Raw response object:", response)
-    # print("🧠 Response content:", getattr(response, "content", "❌ No .content attribute"))
-    return getattr(response, "content", "No response received"), False
+    return getattr(response, "content", "No response received"), False  # used vectorstore
+
 
 
 def add_to_db(answer: str, query: str, vectorstore, embeddings):
     from langchain.docstore.document import Document
-    doc = Document(page_content=answer, metadata={"source": "llm-generated", "query":query})
+    doc = Document(
+        page_content=answer,
+        metadata={"source": "llm-generated", "query": query}
+    )
     vectorstore.add_documents([doc])
+

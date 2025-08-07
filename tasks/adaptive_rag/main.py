@@ -13,6 +13,8 @@ def main():
     folder_path = 'knowledge_base'
     docs = load_docs_from_folder(folder_path)
     vectorstore, embeddings = build_vector(docs)
+    
+
 
     llm = ChatGroq(
         groq_api_key = os.getenv("GROQ_API_KEY"),
@@ -22,30 +24,39 @@ def main():
 
     while True:
         query = input("\n Ask me something (or type exit): ")
+        if query.lower() in ["exit", "quit"]:
+            break
+        
+        pending_add = None
         
         
 
         try:
             print("🤖 Thinking...")
             answer, used_fallback = adaptive_rag(query, vectorstore, embeddings, llm)
+
+            # ✅ Display first
             print("\n====================")
             print(f"🧾 Query   : {query}")
             print(f"💬 Response: {answer}")
             print(f"📦 Source  : {'LLM (fallback)' if used_fallback else 'VectorDB'}")
             print("====================\n")
-            print("\n💬 Response:\n", answer)
 
+            # ✅ Add to DB AFTER displaying
             if used_fallback:
-                print("📥 Saving LLM-generated answer into vectorstore.")
-                print(f"📚 [ADAPTIVE] Added new entry for query: '{query}'\n→ Answer: {answer[:100]}...")
+                print("📥 Saving LLM-generated answer into vectorstore...")
                 add_to_db(answer, query, vectorstore, embeddings)
+                print(f"📚 [ADAPTIVE] Added new entry for query: '{query}'\n→ Answer: {answer[:100]}...")
 
         except Exception as e:
             print("❌ ERROR:", e)
         
-        if query.lower() == "exit":
-            break
-    
+        if pending_add is not None:
+            ans, q = pending_add
+            print("📥 Saving LLM-generated answer into vectorstore...")
+            add_to_db(ans, q, vectorstore, embeddings)
+            print(f"📚 [ADAPTIVE] Added new entry for query: '{q}'\n→ Answer: {ans[:100]}...")
+            pending_add = None
     
 
 
