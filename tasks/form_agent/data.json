@@ -1,0 +1,21 @@
+[
+  {
+    "first_name": "harshith",
+    "last_name": "m",
+    "age": 21,
+    "occupation": "engineer",
+    "address": "habsiguda"
+  },
+  {
+    "first_name": "harshith",
+    "last_name": "m",
+    "age": 21,
+    "occupation": "intern",
+    "address": "habsiguda"
+  },
+  {
+    "name": "harshith m",
+    "age": "21",
+    "address": "habsiguda"
+  }
+]
