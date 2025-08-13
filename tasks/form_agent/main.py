@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 import json
+import uuid
 import os
 
 app = FastAPI()
@@ -23,24 +24,29 @@ def get_form_data():
 @app.post("/form")
 def create_form_data(entry: dict):
     data = read_data()
+    entry["uuid"] =str(uuid.uuid4())
     data.append(entry)
     write_data(data)
     return {"message": "Form data added successfully", "data": entry}
 
-@app.put("/form/{index}")
-def update_form_data(index: int, updated_entry: dict):
+@app.put("/form/{id}")
+def update_form_data(id: int, updated_entry: dict):
     data = read_data()
-    if index < 0 or index >= len(data):
-        raise HTTPException(status_code=404, detail="Entry not found")
-    data[index] = updated_entry
-    write_data(data)
-    return {"message": "Form data updated successfully", "data": updated_entry}
+    for i, item in enumerate(data):
+        if item.get("uuid") == id:
+            updated_entry["uuid"] = id
+            data[i] = updated_entry
+            write_data(data)
+            return{"message" : "Object Field updated successfully", "data" : updated_entry}
+    raise HTTPException(status_code=404, detail="Entry not found")
 
-@app.delete("/form/{index}")
-def delete_form_data(index: int):
+@app.delete("/form/{id}")
+def delete_form_data(id: int):
     data = read_data()
-    if index < 0 or index >= len(data):
-        raise HTTPException(status_code=404, detail="Entry not found")
-    removed_entry = data.pop(index)
-    write_data(data)
-    return {"message": "Form data deleted successfully", "deleted": removed_entry}
+    for i, item in enumerate(data):
+        if item.get["uuid"] == id:
+            removed_entry = data_pop(i)
+            write_data(data)
+            return {"message" : "Object deleted successfully", "deleted" : removed_entry}
+        
+    raise HTTPException(status_code=404, detail="Object not found")

@@ -1,21 +1,14 @@
 [
   {
-    "first_name": "harshith",
-    "last_name": "m",
-    "age": 21,
-    "occupation": "engineer",
-    "address": "habsiguda"
+    "name": "harshith",
+    "age": 23,
+    "address": "hyderabad",
+    "id": "2cd9cd41-c4ee-454c-913c-078fdae74a06"
   },
   {
-    "first_name": "harshith",
-    "last_name": "m",
-    "age": 21,
-    "occupation": "intern",
-    "address": "habsiguda"
-  },
-  {
-    "name": "harshith m",
-    "age": "21",
-    "address": "habsiguda"
+    "name": "dinesh",
+    "age": 25,
+    "address": "vizag",
+    "id": "b38386fb-92f3-4608-b1d4-1f32e5347520"
   }
 ]
