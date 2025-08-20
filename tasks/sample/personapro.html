@@ -38,69 +38,123 @@
       min-height:100vh;
     }
 
-    /* App wrapper now grows and reserves space for footer */
+    
     .app{
       display:flex;
-      flex:1 0 auto;          /* allow to grow but not push footer off-screen */
-      min-height:0;           /* prevent overflow issues */
+      flex:1 0 auto;          
+      min-height:0;           
     }
 
-    /* Sidebar */
+
     .sidebar{
       width:280px;
       background:#fff;
       border-right:1px solid var(--slate-200);
       padding:24px;
-      position:sticky;        /* was relative; changed to sticky so it won't overlay footer */
-      top:0;                  /* sticks within viewport while scrolling */
-      align-self:flex-start;  /* important: sidebar height only as tall as its content */
+      position:sticky;        
+      top:0;                  
+      align-self:flex-start;  
       max-height:calc(100vh - 0px);
-      overflow:auto;          /* allow its own scroll */
+      overflow:auto;          
       display:flex;
       flex-direction:column;
     }
 
-    .logo{
-      display:flex; align-items:center; gap:8px; margin-bottom:28px;
+    .logo-img{
+        display: block;
+        height: 24px;
+        width: auto;
+        margin-bottom: 10px;
     }
-    .logo-badge{
-      width:32px;height:32px;border-radius:50%;
-      background:var(--pink-soft);
-      display:flex;align-items:center;justify-content:center;
-    }
-    .logo-badge::after{
-      content:''; width:16px;height:16px;border-radius:50%; background:var(--pink);
-    }
-    .logo-word{ font-weight:700; font-size:18px; color:var(--ink); }
-    .logo-word i{ color:var(--pink); font-style:italic; font-weight:700; }
 
-    .nav-block{ margin-bottom:24px; }
-    .nav-title{ font-size:21px; font-weight:800; color:var(--ink); margin-bottom:12px; }
-    .nav-list{ list-style:none; margin:0; padding:0; }
-    .nav-item{ margin-bottom:8px; }
-    .nav-link{ text-decoration:none; font-size:14px; color:var(--ink); display:block; padding:4px 0; }
-    .nav-link:hover{ color:#0f172a; }
-    .nav-link.active{ font-weight:600; }
+    .nav-block{
+        margin-bottom:24px; 
+    }
 
-    .profile{ margin-top:auto; display:flex; align-items:center; gap:8px; }
+    .nav-title{ 
+        font-size:21px; 
+        font-weight:800; 
+        
+        margin-bottom:12px; 
+    }
+    
+    .nav-list{ 
+        list-style:none; 
+        margin:0; 
+        padding:0; 
+    }
+    
+    .nav-item{ 
+        margin-bottom:8px; 
+    }
+    .nav-link{ 
+        text-decoration:none; 
+        font-size:14px; 
+        color:var(--ink); 
+        display:block; 
+        padding:4px 0; 
+    }
+    
+    .nav-link:hover{ 
+        color:#0f172a; 
+    }
+    
+    .nav-link.active{ 
+        font-weight:600; 
+    }
+
+    .profile{ 
+        margin-top:auto; 
+        display:flex; 
+        align-items:center; 
+        gap:8px; 
+    }
+    
     .avatar{
-      width:32px;height:32px;border-radius:50%; background:#1e40af; color:#fff;
-      display:flex;align-items:center;justify-content:center; font-weight:700; font-size:14px;
+      width:32px;
+      height:32px;
+      border-radius:50%; 
+      background:#1e40af; 
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center; 
+      font-weight:700; 
+      font-size:14px;
     }
-    .name{ font-size:14px; font-weight:600; }
+    
+    .name{ 
+        font-size:14px; 
+        font-weight:600; 
+    }
 
-    /* Main */
+    
     .main{
       flex:1;
       padding:32px;
       min-width:0;
     }
 
-    .page-title{ font-size:32px; font-weight:800; margin:0 0 8px; }
-    .page-desc{ max-width:680px; font-size:16px; color:var(--slate-500); margin:0 0 20px; }
+    .page-title{ 
+        font-size:32px; 
+        font-weight:800; 
+        margin:0 0 8px; 
+    }
+    
+    .page-desc{ 
+        max-width:680px; 
+        font-size:16px; 
+        color:var(--slate-500); 
+        margin:0 0 20px; 
+    }
 
     .title-accent{
-      height:24px; width:100%; max-width:720px; background:#183656; border-radius:3px; margin:12px 0 10px;
+      height:50px; 
+      width:100%; 
+      max-width:1350px; 
+      background:#183656; 
+      border-radius:3px; 
+      margin:12px 0 10px;
     }
 
     .grid{
@@ -111,59 +165,197 @@
       margin-top:16px;
     }
 
-    .filter-strip{
-      background:#fff; border:1px solid var(--slate-200); border-radius:12px 12px 0 0; border-bottom:none; padding:20px 24px;
+    .filter-section{
+      background:#fff; 
+      border:1px solid var(--slate-200); 
+      border-radius:12px 12px 0 0; 
+      border-bottom:none; 
+      padding:20px 24px;
     }
-    .filter-row{ display:flex; align-items:center; justify-content:space-between; }
-    .filter-title{ font-size:20px; font-weight:700; }
-    .dd-btn{
-      min-width:220px; background:#fff; border:1px solid #d1d5db; color:#6b7280; border-radius:8px; padding:10px 14px; font-size:14px; display:flex; gap:8px; align-items:center; cursor:pointer;
-    }
-    .dd-btn::after{ content:'▾'; font-size:12px; margin-left:auto; color:#6b7280; }
 
-    .protocols{ background:#fff; border:1px solid var(--slate-200); border-radius:0 0 12px 12px; overflow:hidden; }
-    .tabs{ display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:24px; padding-bottom:0; }
-    .tab{ text-align:center; padding:12px 10px; border-radius:8px; font-weight:700; }
-    .tab.active{ background:var(--brand-soft); color:var(--brand); }
-    .tab.inactive{ background:var(--slate-100); color:var(--slate-500); }
-    .list{ padding:24px; }
+    .filter-row{ 
+        display:flex; 
+        align-items:center; 
+        justify-content:space-between; 
+    }
+    
+    .filter-title{ 
+        font-size:20px; 
+        font-weight:700; 
+    }
+    
+    .dd-btn{
+      min-width:220px; 
+      background:#fff; 
+      border:1px solid #d1d5db; 
+      color:#6b7280; 
+      border-radius:8px; 
+      padding:10px 14px; 
+      font-size:14px; 
+      display:flex; 
+      gap:8px; 
+      align-items:center; 
+      cursor:pointer;
+    }
+    
+    
+
+    .protocols{ 
+        background:#fff; 
+        border:1px 
+        solid var(--slate-200); 
+        border-radius:0 0 12px 12px; 
+        overflow:hidden; 
+    }
+    
+    .tabs{ 
+        display:grid; 
+        grid-template-columns:1fr 1fr; 
+        gap:16px; 
+        padding:24px; 
+        padding-bottom:0; 
+    }
+    
+    .tab{ 
+        text-align:center; 
+        padding:12px 10px; 
+        border-radius:8px; 
+        font-weight:700; 
+    }
+    
+    .tab.active{ 
+        background:var(--brand-soft); 
+        color:var(--brand); 
+    }
+    
+    .tab.inactive{ 
+        background:var(--slate-100); 
+        color:var(--slate-500); 
+    }
+    
+    .list{ 
+        padding:24px; 
+    }
 
     .card{
-      background:var(--card-tint); border:1px solid var(--slate-200); border-radius:10px;
-      padding:18px 16px; display:flex; align-items:center; gap:16px; margin-bottom:16px;
+      background:var(--card-tint); 
+      border:1px solid var(--slate-200); 
+      border-radius:10px;
+      padding:18px 16px; 
+      display:flex; 
+      align-items:center; 
+      gap:16px; 
+      margin-bottom:16px;
     }
-    .info{ flex:1; min-width:0; }
-    .name-line{ font-size:16px; font-weight:800; display:inline-flex; gap:8px; align-items:center; color:var(--slate-800); }
-    .name-line::after{ content:'▾'; font-size:12px; color:#9ca3af; }
-    .desc{ margin-top:6px; font-size:14px; color:var(--slate-500); }
+    
+    .info{ 
+        flex:1; 
+        min-width:0; 
+    }
+    
+    .name-line{ 
+        font-size:16px; 
+        font-weight:800; 
+        display:inline-flex; 
+        gap:8px; align-items:center; 
+        color:var(--slate-800); 
+    }
+    
+    .desc{
+         margin-top:6px; 
+         font-size:14px; 
+         color:var(--slate-500); 
+    }
+    
     .btn-add{
-      background:#fff; border:1px solid #d1d5db; color:#374151; border-radius:6px; padding:8px 16px; font-size:14px; font-weight:700; cursor:pointer;
+      background:#fff; 
+      border:2px solid #374151; 
+      color:#374151; 
+      border-radius:20px; 
+      padding:8px 16px; 
+      font-size:14px; 
+      font-weight:800; 
+      cursor:pointer;
     }
-    .btn-add:hover{ background:#f9fafb; border-color:#9ca3af; }
+    
+    .btn-add:hover{ 
+        background:#f9fafb; 
+        border-color:#9ca3af; 
+    }
 
+    
     .summary{
-      background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:24px; position:sticky; top:32px;
+      background:#fff; 
+      border:1px solid var(--slate-200); 
+      border-radius:12px; 
+      padding:24px; 
+      position:sticky; 
+      top:32px;
     }
-    .summary h2{ text-align:center; margin:0 0 6px; font-size:20px; font-weight:800; }
-    .sub{ text-align:center; color:var(--slate-500); font-size:14px; font-weight:700; margin:0 0 18px; }
-    .empty{ min-height:120px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:14px; margin-bottom:22px; text-align:center; }
-    .divider{ height:1px; background:var(--slate-200); margin:14px 0; }
-    .row{ display:flex; justify-content:space-between; font-size:14px; margin:8px 0; }
-    .disc{ color:var(--pink); }
-    .total{ display:flex; justify-content:space-between; font-weight:800; font-size:16px; margin-top:8px; }
+    
+    .summary h2{ 
+        text-align:center; 
+        margin:0 0 6px; 
+        font-size:20px; 
+        font-weight:800; 
+    }
+    
+    .sub{ 
+        text-align:center; 
+        color:var(--slate-500); 
+        font-size:14px; 
+        font-weight:700; 
+        margin:0 0 18px; 
+    }
+    
+    .empty{ 
+        min-height:120px; 
+        display:flex; 
+        align-items:center; 
+        justify-content:center; 
+        color:#9ca3af; 
+        font-size:14px; 
+        margin-bottom:22px; 
+        text-align:center; 
+    }
+    
+    .divider{ 
+        height:1px; 
+        background:var(--slate-200); 
+        margin:14px 0; 
+    }
+    
+    .row{ 
+        display:flex; 
+        justify-content:space-between; 
+        font-size:14px; 
+        margin:8px 0; 
+    }
+    
+    .disc{ 
+        color:var(--pink); 
+    }
+    
+    .total{ 
+        display:flex; 
+        justify-content:space-between; 
+        font-weight:800; 
+        font-size:16px; 
+        margin-top:8px; 
+    }
 
-    /* Full-width footer that spans edge-to-edge, independent of sidebar */
+    
     .footer{
-      flex-shrink:0;                 /* prevent squashing */
+      flex-shrink:0;               
       width:100%;
       background:var(--footer);
       color:var(--footer-text);
       padding:20px 24px;
       text-align:center;
     }
-    .footer small{ display:block; max-width:1100px; margin:0 auto; }
+    
 
-    /* Responsive */
+    
     @media (max-width:1024px){
       .grid{ grid-template-columns:1fr; }
       .summary{ position:static; }
@@ -183,34 +375,41 @@
   <div class="app">
     <!-- Sidebar (no longer overlaps footer) -->
     <aside class="sidebar" aria-label="Sidebar">
-      <div class="logo">
-        <div class="logo-badge" aria-hidden="true"></div>
-        <div class="logo-word">persona <i>pro</i></div>
-      </div>
+      <div>
+  
+    <img
+      class="logo-img"
+      src="../sample/assets/Layer_1.png"  
+      
+      width="180"
+      height="40"
+    />
+
+</div>
 
       <nav>
         <div class="nav-block">
           <div class="nav-title">Clients</div>
           <ul class="nav-list">
             <li class="nav-item"><a class="nav-link active" href="#">Build Client Vitamin Packs</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Add Client</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Search & Edit Clients</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Review Client Quiz Recommendations</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Add Client</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Search & Edit Clients</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Review Client Quiz Recommendations</a></li>
           </ul>
         </div>
 
         <div class="nav-block">
           <div class="nav-title">Supplements</div>
           <ul class="nav-list">
-            <li class="nav-item"><a class="nav-link" href="#">View Supplements & Protocols</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">View Supplements & Protocols</a></li>
           </ul>
         </div>
 
         <div class="nav-block">
           <div class="nav-title">Marketing</div>
           <ul class="nav-list">
-            <li class="nav-item"><a class="nav-link" href="#">Share Your Custom URL</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Marketing Materials</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Share Your Custom URL</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Marketing Materials</a></li>
           </ul>
         </div>
       </nav>
@@ -221,9 +420,9 @@
       </div>
     </aside>
 
-    <!-- Main -->
+    
     <main class="main">
-      <h1 class="page-title">Build Client’s Vitamin Packs</h1>
+      <h1 class="page-title">Build Client's Vitamin Packs</h1>
       <p class="page-desc">
         Customize vitamin packs by selecting individual supplements or groups from clinical protocols for quick additions. Filter supplements by health concern to view targeted options.
       </p>
@@ -232,10 +431,10 @@
 
       <div class="grid">
         <section>
-          <div class="filter-strip">
+          <div class="filter-section">
             <div class="filter-row">
               <div class="filter-title">Filter by concern</div>
-              <button class="dd-btn" type="button">Select concern</button>
+              <select class="dd-btn" type="button">Select concern</select>
             </div>
           </div>
 
@@ -248,7 +447,7 @@
             <div class="list">
               <div class="card">
                 <div class="info">
-                  <div class="name-line">Foundation Formula</div>
+                  <div class="name-line">Foundation Formula </div>
                   <div class="desc">Foundational Multivitamin, Omega 3 with TurmericCurc®, Vitamin D</div>
                 </div>
                 <button class="btn-add">ADD</button>
@@ -327,14 +526,14 @@
     </main>
   </div>
 
-  <!-- Full-bleed footer outside .app so it extends end-to-end beneath sidebar -->
+  
   <footer class="footer">
     <small>These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. As with any dietary supplement, you should advise your healthcare practitioner of the use of this product.</small>
     <small>© 2025 VitaminPacks, Inc. All rights reserved.</small>
   </footer>
 
   <script>
-    // Add-to-summary behavior
+    
     (function(){
       const PRICE = 50;
       const DISCOUNT_RATE = 0.20;
