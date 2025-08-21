@@ -1,0 +1,379 @@
+p<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Persona Pro - Build Client’s Vitamin Packs</title>
+
+  <!-- Fonts (keep) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- NOTE: Bootstrap CSS removed for tabs to avoid conflicting styles/JS.
+       If you must keep Bootstrap, do NOT use its nav-tabs classes; use custom classes only. -->
+
+  <style>
+    :root{
+      --ink:#123456; --slate-800:#1e293b; --slate-500:#64748b; --slate-200:#e2e8f0; --slate-100:#f1f5f9;
+      --brand:#1d4ed8; --brand-soft:#dbeafe; --pink:#ec4899; --pink-soft:#fce7f3;
+      --page-bg: rgba(130,159,210,.20); --card-tint: rgba(130,159,210,.25);
+      --footer:#16314e; --footer-text:#c5d0e0;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:"Noto Sans Georgian",sans-serif; color:var(--slate-800); background:var(--page-bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.45;
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+    .app{display:flex; flex:1 0 auto; min-height:0;}
+
+    .sidebar{
+      width:280px; background:#fff; border-right:1px solid var(--slate-200); padding:24px;
+      position:sticky; top:0; align-self:flex-start; height:1000px; overflow:auto; display:flex; flex-direction:column;
+    }
+    .logo-img{display:block; height:24px; width:auto; margin-bottom:10px;}
+    .logo-img2{display:block; height:24px; width:auto;}
+
+    .nav-block{margin-bottom:24px;}
+    .nav-title{font-size:21px; font-weight:800; position:relative; display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+    .nav-title.nav-line::after{content:""; height:1px; width:100px; background:var(--ink); display:block;}
+    .nav-list{list-style:none; margin:0; padding:0;}
+    .nav-item{margin-bottom:8px;}
+    .nav-link{ text-decoration:none; font-size:14px; color:var(--ink); display:block; padding:4px 0; }
+    .nav-link.active{font-weight:600;}
+    .profile{display:flex; align-items:center; gap:8px; justify-content:flex-start;}
+    .avatar{width:32px;height:32px;border-radius:50%;background:#1e40af;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+    .name{font-size:14px;font-weight:600;}
+
+    .main{flex:1; padding:32px; min-width:0;}
+    .page-title{font-size:32px; font-weight:800; margin:0 0 8px;}
+    .page-desc{max-width:680px; font-size:16px; color:var(--slate-500); margin:0 0 20px;}
+    .title-accent{height:50px; width:100%; max-width:1350px; background:#183656; border-radius:3px; margin:12px 0 10px;}
+
+    .grid{display:grid; grid-template-columns:2fr 1fr; gap:32px; align-items:start; margin-top:16px;}
+
+    .filter-section{background:#fff; border:1px solid var(--slate-200); border-radius:12px 12px 0 0; border-bottom:none; padding:20px 24px;}
+    .filter-row{display:flex; align-items:center; justify-content:space-between;}
+    .filter-title{font-size:20px; font-weight:700;}
+    .dd-btn{min-width:220px; background:#fff; border:1px solid #d1d5db; color:#6b7280; border-radius:8px; padding:10px 14px; font-size:14px; display:flex; gap:8px; align-items:center; cursor:pointer;}
+
+    .protocols{background:#fff; border:1px solid var(--slate-200); border-radius:0 0 12px 12px; overflow:hidden;}
+
+    /* Tabs */
+    .tabs{display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:24px; padding-bottom:0;}
+    .tab{ text-align:center; padding:12px 10px; border-radius:8px; font-weight:700; cursor:pointer; user-select:none; }
+    .tab.active{ background:var(--brand-soft); color:var(--brand); }
+    .tab.inactive{ background:var(--slate-100); color:var(--slate-500); }
+
+    /* Panels */
+    .panel{ padding:24px; display:none; }
+    .panel.active{ display:block; }
+
+    .card{ background:var(--card-tint); border:1px solid var(--slate-200); border-radius:10px; padding:18px 16px; display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+    .info{flex:1; min-width:0;}
+    .name-line{font-size:16px; font-weight:800; display:inline-flex; gap:8px; align-items:center; color:var(--slate-800);}
+    .protocol-name:after{content:'▼'; font-size:12px; color:#9ca3af;}
+    .desc{margin-top:6px; font-size:14px; color:var(--slate-500);}
+    .btn-add{ background:#fff; border:2px solid #374151; color:#374151; border-radius:20px; padding:8px 16px; font-size:14px; font-weight:800; cursor:pointer; }
+    .btn-add:hover{ background:#f9fafb; border-color:#9ca3af; }
+
+    .summary{ background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:24px; position:sticky; top:32px; height:700px; display:flex; flex-direction:column; }
+    .summary h2{ text-align:center; margin:0 0 6px; font-size:20px; font-weight:800; }
+    .sub{ text-align:center; color:var(--slate-500); font-size:14px; font-weight:700; margin:0 0 18px; }
+    .empty{ min-height:120px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:14px; margin-bottom:22px; text-align:center; }
+    .divider{ height:1px; background:var(--slate-200); margin:14px 0; }
+    .divider1{ height:2px; background:var(--slate-200); margin:150px 0; }
+    .row{ display:flex; justify-content:space-between; flex-direction:column; font-size:14px; align-items:flex-end; }
+    .disc{ color:var(--pink); }
+    .total{ display:flex; justify-content:space-between; font-weight:800; font-size:16px; margin-top:auto; }
+
+    .footer{
+      flex-shrink:0; width:100%; background:var(--footer); color:var(--footer-text);
+      padding:20px 24px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;
+    }
+    .footer .logo-img2{ display:block; height:40px; width:auto; }
+
+    @media (max-width:1024px){
+      .grid{grid-template-columns:1fr;}
+      .summary{position:static;}
+      .title-accent{max-width:100%;}
+    }
+    @media (max-width:768px){
+      body{padding-bottom:0;}
+      .app{flex-direction:column;}
+      .sidebar{width:100%; position:static; max-height:none;}
+      .tabs{grid-template-columns:1fr; gap:10px;}
+      .card{flex-direction:column; align-items:flex-start;}
+      .btn-add{align-self:flex-end;}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sidebar">
+      <div>
+        <img class="logo-img" src="../sample/assets/Layer_1.png" width="180" height="40" />
+      </div>
+
+      <nav>
+        <div class="nav-block">
+          <div class="nav-title nav-line">Clients</div>
+          <ul class="nav-list">
+            <li class="nav-item"><a class="nav-link active" href="#">Build Client Vitamin Packs</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Add Client</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Search & Edit Clients</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Review Client Quiz Recommendations</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-block">
+          <div class="nav-title nav-line">Supplements</div>
+          <ul class="nav-list">
+            <li class="nav-item"><a class="nav-link active" href="#">View Supplements & Protocols</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-block">
+          <div class="nav-title nav-line">Marketing</div>
+          <ul class="nav-list">
+            <li class="nav-item"><a class="nav-link active" href="#">Share Your Custom URL</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Marketing Materials</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="profile">
+        <div class="avatar">N</div>
+        <div class="name">[Name]</div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <h1 class="page-title">Build Client's Vitamin Packs</h1>
+      <p class="page-desc">
+        Customize vitamin packs by selecting individual supplements or groups from clinical protocols for quick additions. Filter supplements by health concern to view targeted options.
+      </p>
+
+      <div class="title-accent"></div>
+
+      <div class="grid">
+        <section>
+          <div class="filter-section">
+            <div class="filter-row">
+              <div class="filter-title">Filter by concern</div>
+              <select class="dd-btn" id="concernSelect">
+                <option value="all" selected>All</option>
+                <option value="protocols">Protocols</option>
+                <option value="supplements">Supplements</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Custom tabs -->
+          <div class="protocols">
+            <div class="tabs" role="tablist" aria-label="Content tabs">
+              <div class="tab active" role="tab" aria-selected="true" tabindex="0" data-target="#panel-protocols">Protocols</div>
+              <div class="tab inactive" role="tab" aria-selected="false" tabindex="-1" data-target="#panel-supplements">Supplements</div>
+            </div>
+
+            <!-- Panels -->
+            <div id="panel-protocols" class="panel active" role="tabpanel">
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Foundation Formula</div>
+                  <div class="desc">Foundational Multivitamin, Omega 3 with TurmericCurc®, Vitamin D</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Energy Support</div>
+                  <div class="desc">Cordyceps, Vitamin B12, Green Tea with Caffeine</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Healthy Weight Support</div>
+                  <div class="desc">Blood Sugar Balance, Appetite Support, Berberine</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Hair, Skin, & Nails</div>
+                  <div class="desc">Hair, Skin, & Nails</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Focus & Memory Support</div>
+                  <div class="desc">Brain Gain, Vitamins B12, Ginkgo Biloba</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Digestive Balance Support</div>
+                  <div class="desc">Digestive Enzymes, Daily Probiotic</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line protocol-name">Sound Slumber</div>
+                  <div class="desc">Melatonin 3 mg, Herbal Rest</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+            </div>
+
+            <div id="panel-supplements" class="panel" role="tabpanel" aria-hidden="true">
+              <div class="card">
+                <div class="info">
+                  <div class="name-line">Omega 3</div>
+                  <div class="desc">EPA/DHA concentrate</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+
+              <div class="card">
+                <div class="info">
+                  <div class="name-line">Vitamin D3</div>
+                  <div class="desc">Cholecalciferol 2000 IU</div>
+                </div>
+                <button class="btn-add">ADD</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="summary" aria-live="polite">
+          <h2>Program Summary</h2>
+          <div class="sub">28 DAY SUPPLY</div>
+
+          <div class="empty js-summary">No protocols added yet</div>
+
+          <div class="divider"></div>
+
+          <div class="row disc">
+            <span>Discount (20%)</span>
+            <span class="js-discount">-$0.00</span>
+          </div>
+          <div class="divider1"></div>
+          <div class="total">
+            <span>Total</span>
+            <span class="js-total">$0.00</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <img class="logo-img2" src="../sample/assets/Layer_3.png" width="180" height="40"/>
+    <span>These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. As with any dietary supplement, you should advise your healthcare practitioner of the use of this product.</span>
+    <p style="font-weight: 600;">© 2025 VitaminPacks, Inc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Simple cart math (unchanged from earlier logic)
+    (function(){
+      const PRICE = 50, DISCOUNT_RATE = 0.20;
+      const buttons = document.querySelectorAll('.btn-add');
+      const summary = document.querySelector('.js-summary');
+      const disc = document.querySelector('.js-discount');
+      const total = document.querySelector('.js-total');
+      const cart = new Map();
+
+      function money(n){ return `$${n.toFixed(2)}`; }
+
+      function render(){
+        if(cart.size === 0){
+          summary.classList.add('empty');
+          summary.textContent = 'No protocols added yet';
+          disc.textContent='-$0.00';
+          total.textContent='$0.00';
+          return;
+        }
+        let html='', subtotal=0;
+        cart.forEach((q,name)=>{ const line=q*PRICE; subtotal+=line; html+=`<div class="row"><span>${name} x${q}</span><span>${money(line)}</span></div>`; });
+        summary.classList.remove('empty');
+        summary.innerHTML = html;
+        const discount = subtotal*DISCOUNT_RATE;
+        const net = subtotal - discount;
+        disc.textContent = `-${money(discount).slice(1)}`;
+        total.textContent = money(net);
+      }
+
+      buttons.forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const name = b.closest('.card').querySelector('.name-line').textContent.trim();
+          cart.set(name,(cart.get(name)||0)+1);
+          render();
+        });
+      });
+    })();
+
+    // Tabs controller (no Bootstrap required)
+    (function(){
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const panels = {
+        '#panel-protocols': document.querySelector('#panel-protocols'),
+        '#panel-supplements': document.querySelector('#panel-supplements')
+      };
+
+      function activate(targetSel){
+        // tabs state
+        tabs.forEach(t=>{
+          const isActive = t.dataset.target === targetSel;
+          t.classList.toggle('active', isActive);
+          t.classList.toggle('inactive', !isActive);
+          t.setAttribute('aria-selected', String(isActive));
+          t.tabIndex = isActive ? 0 : -1;
+        });
+        // panels state
+        Object.entries(panels).forEach(([sel,el])=>{
+          const show = sel === targetSel;
+          el.classList.toggle('active', show);
+          el.style.display = show ? 'block' : 'none';
+          el.setAttribute('aria-hidden', String(!show));
+        });
+      }
+
+      // Mouse/keyboard activation
+      tabs.forEach(t=>{
+        t.addEventListener('click', ()=> activate(t.dataset.target));
+        t.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activate(t.dataset.target); }
+        });
+      });
+
+      // Optional: select control ties to tabs
+      const select = document.getElementById('concernSelect');
+      if(select){
+        select.addEventListener('change', ()=>{
+          if(select.value === 'protocols') activate('#panel-protocols');
+          else if(select.value === 'supplements') activate('#panel-supplements');
+          else activate('#panel-protocols'); // default to protocols when "All"
+        });
+      }
+
+      // initial
+      activate('#panel-protocols');
+    })();
+  </script>
+</body>
+</html>
+    
